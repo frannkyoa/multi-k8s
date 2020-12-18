@@ -13,14 +13,14 @@ before_install:
   - gcloud auth activate-service-account --key-file service-account.json
   - gcloud config set project gcp-jenkins-gke-dev
   - gcloud config set compute/zone europe-west2-c
-  - gcloud container clusters  get-credentials jenkins-gkecls-01 --zone europe-west2-c
+  - gcloud container clusters  get-credentials jenkins-gkecls-01
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin 
   - docker build -t frannyoa/react-test -f ./client/Dockerfile.dev ./client
 
-  script:
+script:
     - docker run frannyoa/react-test npm test -- --coverage
 
-  deploy:
+deploy:
     provider: script
     script: bash ./deploy.sh
     on:
